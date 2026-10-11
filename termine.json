@@ -1,0 +1,65 @@
+{
+  "version": 1,
+  "termine": [
+    {
+      "id": "t1",
+      "titel": "Kartenvorverkauf & Proklamation",
+      "auto": "",
+      "datum": "2026-11-06",
+      "zeit": "18:00",
+      "ort": "DGH Oberwichterich",
+      "notiz": "Anschließend ab 19:11 Uhr: Proklamation unserer Prinzessin Marie I.",
+      "hervorheben": false
+    },
+    {
+      "id": "t3",
+      "titel": "Tollitätenabend",
+      "auto": "",
+      "datum": "2027-01-29",
+      "zeit": "19:11",
+      "ort": "Sportgelände des SV Frauenberg",
+      "notiz": "Eintritt für alle frei",
+      "hervorheben": false
+    },
+    {
+      "id": "t4",
+      "titel": "Prunksitzung FrauObI",
+      "auto": "",
+      "datum": "2027-01-30",
+      "zeit": "19:11",
+      "ort": "Sportgelände des SV Frauenberg",
+      "notiz": "Mit tollen Live-Acts · Einlass 18:11 Uhr · Eintritt 15 €",
+      "hervorheben": false
+    },
+    {
+      "id": "t5",
+      "titel": "Kinderparty",
+      "auto": "",
+      "datum": "2027-01-31",
+      "zeit": "14:00",
+      "ort": "Sportgelände des SV Frauenberg",
+      "notiz": "Eintritt für alle kostenlos",
+      "hervorheben": false
+    },
+    {
+      "id": "t7",
+      "titel": "Karnevalszug FrauObI",
+      "auto": "",
+      "datum": "2027-02-06",
+      "zeit": "14:00",
+      "ort": "Zugfinale im DGH Oberwichterich",
+      "notiz": "Aufstellung ab 12:00 Uhr · Eintritt 5 € · Zugteilnehmer und KG-Mitglieder haben freien Eintritt",
+      "hervorheben": true
+    },
+    {
+      "id": "t8",
+      "titel": "Rosenmontag",
+      "auto": "rosen",
+      "datum": "",
+      "zeit": "",
+      "ort": "",
+      "notiz": "Jeck unterwegs in der Region",
+      "hervorheben": false
+    }
+  ]
+}

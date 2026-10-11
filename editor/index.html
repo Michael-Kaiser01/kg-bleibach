@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex,nofollow">
+<meta name="color-scheme" content="light">
+<title>Termin-Editor — KG Bleibach Frauenberg</title>
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<style>
+@font-face{font-family:"Bricolage Grotesque";src:url(/fonts/bricolage-grotesque-var.woff2) format("woff2");font-weight:200 800;font-display:swap}
+@font-face{font-family:"Space Grotesk";src:url(/fonts/space-grotesk-var.woff2) format("woff2");font-weight:300 700;font-display:swap}
+:root{--paper:#f4eddd;--paper2:#ece2cc;--ink:#191712;--ink2:#3a362c;--rot:#d92f23;--gruen:#0e5a35;--gold:#d9a83b;--bd:2px solid var(--ink);--sh:4px 4px 0 var(--ink);
+  --fd:"Bricolage Grotesque",system-ui,sans-serif;--fb:"Space Grotesk",system-ui,sans-serif}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+html{scroll-padding-bottom:7rem}
+body{background:var(--paper);color:var(--ink);font:400 1rem/1.55 var(--fb);-webkit-font-smoothing:antialiased;min-height:100vh}
+:focus-visible{outline:3px solid var(--rot);outline-offset:2px}
+.wrap{width:min(980px,92vw);margin-inline:auto}
+header.top{background:var(--ink);color:var(--paper);border-bottom:var(--bd)}
+header.top .wrap{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:.5rem 1rem;padding:.9rem 0}
+header.top h1{font:800 1.3rem/1.1 var(--fd);letter-spacing:-.01em}
+header.top h1 small{display:block;font:600 .68rem/1.2 var(--fb);letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-top:.2rem}
+header.top nav{display:flex;gap:1.1rem;align-items:center}
+header.top a,header.top button{color:var(--gold);font:600 .9rem/1 var(--fb);text-decoration:none;background:none;border:0;cursor:pointer;padding:.3rem 0}
+header.top a:hover,header.top button:hover{text-decoration:underline}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5em;padding:.8em 1.2em;font:700 .8rem/1 var(--fd);letter-spacing:.05em;text-transform:uppercase;color:var(--ink);background:#fff;border:var(--bd);box-shadow:var(--sh);cursor:pointer;text-decoration:none;transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink)}
+.btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.btn[disabled]{opacity:.55;cursor:wait;transform:none;box-shadow:var(--sh)}
+.btn.rot{background:var(--rot);color:#fff}.btn.gruen{background:var(--gruen);color:#fff}.btn.gold{background:var(--gold)}
+.btn.small{padding:.6em .8em;font-size:.7rem;box-shadow:2px 2px 0 var(--ink);min-height:38px}
+.btn.big{padding:1em 1.5em;font-size:.92rem}
+h2{font:800 1.45rem/1.05 var(--fd);text-transform:uppercase;margin-bottom:.4rem}
+.lead{color:var(--ink2);max-width:62ch;margin-bottom:1.2rem}
+main{padding:1.6rem 0 8rem;display:grid;gap:1.8rem}
+section.box{background:#fff;border:var(--bd);box-shadow:6px 6px 0 var(--ink);padding:clamp(1rem,3vw,1.7rem)}
+.bar{display:flex;flex-wrap:wrap;gap:.7rem;margin-bottom:1.1rem}
+
+/* Login */
+#login{max-width:520px;margin:2.5rem auto 0}
+#login form{display:grid;gap:.9rem}
+label.l{font:700 .64rem/1 var(--fd);letter-spacing:.14em;text-transform:uppercase;color:var(--ink2);display:block;margin-bottom:.3rem}
+input[type=text],input[type=password],input[type=date],input[type=time],select{width:100%;font:500 1rem/1.35 var(--fb);padding:.65rem .7rem;border:var(--bd);background:#fff;color:var(--ink);border-radius:0;min-height:46px}
+.msg{border:var(--bd);padding:.8rem 1rem;font-size:.92rem;background:var(--paper);border-left:8px solid var(--gold)}
+.msg.err{border-left-color:var(--rot);background:#fdeceb}
+.msg b{display:block;font:800 .95rem/1.2 var(--fd);margin-bottom:.35rem}
+.msg ol{margin:.4rem 0 .2rem 1.25rem;display:grid;gap:.25rem}
+.msg code{font:600 .85em var(--fb);background:#fff;border:1px solid var(--ink);padding:.05em .35em}
+
+/* Terminkarten */
+#list{display:grid;gap:.9rem}
+.ev{border:var(--bd);background:var(--paper);padding:.9rem;display:grid;gap:.75rem;grid-template-columns:repeat(12,1fr)}
+.ev.past{opacity:.6}
+.ev.bad{outline:3px solid var(--rot);outline-offset:2px}
+.ev .f{min-width:0}
+.c-t{grid-column:span 7}.c-z{grid-column:span 5}.c-m{grid-column:span 7}.c-d{grid-column:span 5}.c-o{grid-column:span 5}.c-n{grid-column:span 7}
+.ev:not(.fix) .c-d{display:none}
+.ev:not(.fix) .c-m{grid-column:span 7}
+.ev .acts{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;gap:.6rem .8rem;border-top:2px dashed #cfc6af;padding-top:.75rem}
+.ev .chk{display:inline-flex;align-items:center;gap:.5rem;font:600 .86rem/1.2 var(--fb);cursor:pointer;min-height:38px}
+.ev .chk input{width:20px;height:20px;accent-color:var(--rot)}
+.ev .eff{flex:1 1 100%;font:700 .82rem/1.25 var(--fd);color:var(--gruen)}
+.ev .eff.warn{color:var(--rot)}
+.ev .sp{flex:1}
+@media (max-width:640px){.c-t,.c-z,.c-m,.c-d,.c-o,.c-n,.ev:not(.fix) .c-m{grid-column:1/-1}.ev .chk{flex:1 1 100%}.ev .sp{display:none}select{font-size:.92rem;padding-inline:.5rem}}
+
+/* Vorschau */
+.prev{border:var(--bd)}
+.prev .r{display:grid;grid-template-columns:190px 1fr auto;gap:1rem;align-items:center;padding:.8rem 1rem;border-top:2px solid var(--ink);background:var(--paper)}
+.prev .r:first-child{border-top:0}
+.prev .r.hl{background:var(--rot);color:#fff}
+.prev .dt{font:800 .78rem/1.3 var(--fd);text-transform:uppercase}
+.prev h4{font:800 1.1rem/1.1 var(--fd);text-transform:uppercase}
+.prev .nt{font-size:.84rem;text-align:right;max-width:32ch}
+.prev .tba .bd{display:inline-block;border:2px solid currentColor;padding:.25rem .5rem;font:800 .58rem/1 var(--fd);letter-spacing:.1em}
+@media (max-width:700px){.prev .r{grid-template-columns:1fr;gap:.2rem}.prev .nt{text-align:left;max-width:none}}
+
+/* Speichern-Leiste */
+#savebar{position:fixed;left:0;right:0;bottom:0;z-index:40;background:var(--ink);color:var(--paper);border-top:var(--bd);padding:.75rem 0 calc(.75rem + env(safe-area-inset-bottom))}
+#savebar .wrap{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem 1.2rem;justify-content:space-between}
+#state{font:600 .9rem/1.3 var(--fb);display:flex;align-items:center;gap:.6rem}
+#state i{width:12px;height:12px;border-radius:50%;background:var(--gruen);border:2px solid var(--paper);flex:none}
+#state.dirty i{background:var(--rot)}
+#state.off i{background:var(--gold)}
+#state a{color:var(--gold);font-weight:700;text-underline-offset:3px;white-space:nowrap}
+#state a:hover{color:#fff}
+#savebar .btn{box-shadow:3px 3px 0 var(--gold);border-color:var(--paper)}
+@media (max-width:560px){#savebar .wrap{flex-direction:column;align-items:stretch}#savebar .btn{width:100%}}
+#toast{position:fixed;left:50%;bottom:6.5rem;translate:-50% 20px;background:#fff;color:var(--ink);padding:.8rem 1.2rem;font:600 .92rem/1.35 var(--fb);border:var(--bd);box-shadow:var(--sh);opacity:0;pointer-events:none;transition:.3s;z-index:60;max-width:92vw;text-align:center}
+#toast.show{opacity:1;translate:-50% 0}
+#toast.err{background:var(--rot);color:#fff}
+#toast.ok{background:var(--gruen);color:#fff}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <h1>Termin-Editor<small>KG „Bleibach" Frauenberg 1972 e.V.</small></h1>
+  <nav>
+    <a href="/">← Zur Website</a>
+    <button type="button" id="logout" hidden>Abmelden</button>
+  </nav>
+</div></header>
+
+<main class="wrap">
+
+  <!-- ANMELDUNG -->
+  <section class="box" id="login" aria-labelledby="h-login">
+    <h2 id="h-login">Anmelden</h2>
+    <p class="lead">Bitte das Editor-Passwort eingeben, um die Termine zu ändern.</p>
+    <form id="lform" autocomplete="on">
+      <div>
+        <label class="l" for="pw">Passwort</label>
+        <input type="password" id="pw" name="password" autocomplete="current-password" required autofocus>
+      </div>
+      <div id="lmsg" role="alert" hidden></div>
+      <button class="btn rot big" id="lbtn" type="submit">Anmelden</button>
+    </form>
+  </section>
+
+  <!-- EDITOR -->
+  <div id="app" hidden style="display:grid;gap:1.8rem">
+    <div id="appmsg" hidden></div>
+    <section class="box" aria-labelledby="h-ed">
+      <h2 id="h-ed">Termine bearbeiten</h2>
+      <p class="lead">Ändern, ergänzen oder löschen. Ganz unten auf <b>„Speichern &amp; veröffentlichen"</b> tippen, dann ist die Website sofort aktuell. Vergangene Termine blendet die Website von selbst aus.</p>
+      <div class="bar">
+        <button class="btn rot" id="add" type="button">+ Neuer Termin</button>
+        <button class="btn" id="sort" type="button">Nach Datum sortieren</button>
+      </div>
+      <div id="list"></div>
+    </section>
+
+    <section class="box" aria-labelledby="h-pv">
+      <h2 id="h-pv">Vorschau</h2>
+      <p class="lead" style="margin-bottom:.8rem">So erscheinen die Termine auf der Website.</p>
+      <div class="prev" id="prev"></div>
+    </section>
+  </div>
+</main>
+
+<div id="savebar" hidden>
+  <div class="wrap">
+    <div id="state" role="status" aria-live="polite"><i></i><span id="statetxt">Alles gespeichert</span><a id="viewsite" href="/#termine" target="_blank" rel="noopener">Website ansehen ↗</a></div>
+    <button class="btn gold big" id="save" type="button">Speichern &amp; veröffentlichen</button>
+  </div>
+</div>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(()=>{
+const $=id=>document.getElementById(id);
+const API='/.netlify/functions/termine';
+const SS='kgb_editor_pw';
+const DEFAULT={"version":1,"termine":[
+ {"id":"t1","titel":"Kartenvorverkauf & Proklamation","auto":"","datum":"2026-11-06","zeit":"18:00","ort":"DGH Oberwichterich","notiz":"Anschließend ab 19:11 Uhr: Proklamation unserer Prinzessin Marie I.","hervorheben":false},
+ {"id":"t3","titel":"Tollitätenabend","auto":"","datum":"2027-01-29","zeit":"19:11","ort":"Sportgelände des SV Frauenberg","notiz":"Eintritt für alle frei","hervorheben":false},
+ {"id":"t4","titel":"Prunksitzung FrauObI","auto":"","datum":"2027-01-30","zeit":"19:11","ort":"Sportgelände des SV Frauenberg","notiz":"Mit tollen Live-Acts · Einlass 18:11 Uhr · Eintritt 15 €","hervorheben":false},
+ {"id":"t5","titel":"Kinderparty","auto":"","datum":"2027-01-31","zeit":"14:00","ort":"Sportgelände des SV Frauenberg","notiz":"Eintritt für alle kostenlos","hervorheben":false},
+ {"id":"t7","titel":"Karnevalszug FrauObI","auto":"","datum":"2027-02-06","zeit":"14:00","ort":"Zugfinale im DGH Oberwichterich","notiz":"Aufstellung ab 12:00 Uhr · Eintritt 5 € · Zugteilnehmer und KG-Mitglieder haben freien Eintritt","hervorheben":true},
+ {"id":"t8","titel":"Rosenmontag","auto":"rosen","datum":"","zeit":"","ort":"","notiz":"Jeck unterwegs in der Region","hervorheben":false}]};
+
+let S={version:1,termine:[]};   // aktueller Bearbeitungsstand
+let PW='';                       // Passwort dieser Sitzung
+let LIVE=true;                   // true = Speichern auf dem Server möglich, false = nur Datei-Download
+let dirty=false, saving=false;
+
+/* ---------- Hilfen ---------- */
+const sget=k=>{try{return sessionStorage.getItem(k)||'';}catch(e){return '';}};
+const sset=(k,v)=>{try{v?sessionStorage.setItem(k,v):sessionStorage.removeItem(k);}catch(e){}};
+function toast(m,kind){ const t=$('toast'); t.textContent=m; t.className='show'+(kind?' '+kind:''); clearTimeout(toast.t); toast.t=setTimeout(()=>{t.className='';},kind==='err'?5200:3200); }
+const uid=()=>'t'+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
+function normalize(d){ return {version:1,termine:(d&&Array.isArray(d.termine)?d.termine:[]).map(t=>({id:t.id||uid(),titel:String(t.titel||''),auto:t.auto||'',datum:t.datum||'',zeit:t.zeit||'',ort:t.ort||'',notiz:t.notiz||'',hervorheben:t.hervorheben===true}))}; }
+function el(tag,cls,txt){ const e=document.createElement(tag); if(cls)e.className=cls; if(txt!=null)e.textContent=txt; return e; }
+function msg(box,kind,title,lines,steps){
+  box.replaceChildren(); box.className='msg'+(kind==='err'?' err':''); box.hidden=false;
+  box.appendChild(el('b',null,title));
+  (lines||[]).forEach(l=>box.appendChild(el('p',null,l)));
+  if(steps){ const ol=el('ol'); steps.forEach(s=>{ const li=el('li'); s.split('`').forEach((part,i)=>{ if(i%2){ li.appendChild(el('code',null,part)); } else li.appendChild(document.createTextNode(part)); }); ol.appendChild(li); }); box.appendChild(ol); }
+}
+
+/* ---------- Datumslogik (identisch zur Website) ---------- */
+const easter=y=>{const a=y%19,b=Math.floor(y/100),c=y%100,d=Math.floor(b/4),e=b%4,f=Math.floor((b+8)/25),g=Math.floor((b-f+1)/3),h=(19*a+b-d-g+15)%30,i=Math.floor(c/4),k=c%4,l=(32+2*e+2*i-h-k)%7,m=Math.floor((a+11*h+22*l)/451),mo=Math.floor((h+l-7*m+114)/31),da=(h+l-7*m+114)%31+1;return new Date(y,mo-1,da);};
+const off=(dt,d)=>{const x=new Date(dt);x.setDate(x.getDate()+d);x.setHours(0,0,0,0);return x;};
+const now=new Date(); let zy=now.getFullYear(); if(off(easter(zy),-46)<now) zy++;
+const AUTO={sess:new Date(zy-1,10,11),weiber:off(easter(zy),-52),zoch:off(easter(zy),-50),rosen:off(easter(zy),-48)};
+const F=d=>d.toLocaleDateString('de-DE',{weekday:'short',day:'2-digit',month:'2-digit',year:'numeric'});
+const today=new Date(); today.setHours(0,0,0,0);
+function eff(t){ if(t.auto&&AUTO[t.auto]) return AUTO[t.auto];
+  if(t.datum){ const p=t.datum.split('-').map(Number); if(p.length===3&&p[0]) return new Date(p[0],p[1]-1,p[2]); } return null; }
+const MODES=[['','Termin folgt (ohne Datum)'],['fix','Festes Datum'],['sess','Automatisch: Sessionstart (11.11.)'],['weiber','Automatisch: Weiberfastnacht'],['zoch','Automatisch: Karnevalssamstag'],['rosen','Automatisch: Rosenmontag']];
+const mode=t=>t.auto?t.auto:((t.datum||t._fix)?'fix':'');
+
+/* ---------- Zustand / Speicherleiste ---------- */
+function setState(){
+  const s=$('state'), tx=$('statetxt'), b=$('save');
+  s.className=''; b.disabled=saving;
+  if(!LIVE){ s.classList.add('off'); tx.textContent=dirty?'Änderungen nur als Datei möglich':'Nur-Datei-Modus'; b.textContent='termine.json herunterladen'; return; }
+  b.textContent=saving?'Speichert …':'Speichern & veröffentlichen';
+  if(dirty){ s.classList.add('dirty'); tx.textContent='Nicht gespeicherte Änderungen'; }
+  else tx.textContent=setState.when?('Gespeichert um '+setState.when+' Uhr'+(setState.live?' · jetzt live auf der Website':'')):'Alles gespeichert';
+}
+function touch(){ dirty=true; setState(); }
+window.addEventListener('beforeunload',e=>{ if(dirty&&LIVE){ e.preventDefault(); e.returnValue=''; } });
+
+/* ---------- Rendering ---------- */
+function field(cls,label,input){ const d=el('div','f '+cls); const l=el('label','l',label); d.append(l,input); return d; }
+function inp(type,val,on,ph,extra){ const i=document.createElement('input'); i.type=type; i.value=val||''; if(ph)i.placeholder=ph; if(extra)Object.assign(i,extra); i.addEventListener('input',()=>on(i.value)); return i; }
+function render(){
+  const list=$('list'); list.replaceChildren();
+  S.termine.forEach((t,idx)=>{
+    const card=el('div','ev'); card.dataset.id=t.id;
+    const sel=document.createElement('select');
+    MODES.forEach(([v,l])=>{ const o=el('option',null,l); o.value=v; if(v===mode(t))o.selected=true; sel.appendChild(o); });
+    sel.addEventListener('change',()=>{ const v=sel.value; t._fix=(v==='fix'); if(v==='fix'){t.auto='';} else if(v===''){t.auto='';t.datum='';} else {t.auto=v;t.datum='';} touch(); render(); redrawPrev(); });
+    const date=inp('date',t.datum,v=>{ t.datum=v; t.auto=''; card.classList.remove('bad'); touch(); redrawPrev(); upd(); });
+    const effEl=el('div','eff');
+    const upd=()=>{ const x=eff(t); card.classList.toggle('fix',mode(t)==='fix'); card.classList.toggle('past',!!(x&&x<today));
+      effEl.className='eff'+(x&&x<today?' warn':'');
+      effEl.textContent=x?('Erscheint als: '+F(x)+(x<today?' — vergangen, wird auf der Website ausgeblendet':'')):'Erscheint als: „Termin folgt"'; };
+    card.append(
+      field('c-t','Titel',inp('text',t.titel,v=>{ t.titel=v; card.classList.remove('bad'); touch(); redrawPrev(); },'z. B. Prunksitzung')),
+      field('c-z','Uhrzeit',inp('time',t.zeit,v=>{ t.zeit=v; touch(); redrawPrev(); })),
+      field('c-m','Datum',sel),
+      field('c-d','Festes Datum',date),
+      field('c-o','Ort',inp('text',t.ort,v=>{ t.ort=v; touch(); redrawPrev(); },'z. B. Dorfgemeinschaftshaus')),
+      field('c-n','Notiz',inp('text',t.notiz,v=>{ t.notiz=v; touch(); redrawPrev(); },'kurzer Zusatz (optional)'))
+    );
+    const acts=el('div','acts');
+    const chk=el('label','chk'); const c=document.createElement('input'); c.type='checkbox'; c.checked=!!t.hervorheben;
+    c.addEventListener('change',()=>{ t.hervorheben=c.checked; touch(); redrawPrev(); }); chk.append(c,document.createTextNode('Auf der Website hervorheben'));
+    const mv=(txt,delta,label)=>{ const b=el('button','btn small',txt); b.type='button'; b.setAttribute('aria-label',label); b.addEventListener('click',()=>{ const j=idx+delta; if(j<0||j>=S.termine.length)return; [S.termine[idx],S.termine[j]]=[S.termine[j],S.termine[idx]]; touch(); render(); redrawPrev(); }); return b; };
+    const del=el('button','btn small','Löschen'); del.type='button';
+    del.addEventListener('click',()=>{ if(confirm('Termin „'+(t.titel||'ohne Titel')+'" wirklich löschen?')){ S.termine.splice(idx,1); touch(); render(); redrawPrev(); } });
+    acts.append(chk,el('span','sp'),mv('↑',-1,'Nach oben'),mv('↓',1,'Nach unten'),del,effEl);
+    card.appendChild(acts); list.appendChild(card); upd();
+  });
+  if(!S.termine.length) list.appendChild(el('p',null,'Noch keine Termine. Mit „+ Neuer Termin" starten.'));
+}
+function redrawPrev(){
+  const box=$('prev'); box.replaceChildren(); let n=0;
+  S.termine.forEach(t=>{ const e=eff(t); if(e&&e<today) return;
+    const r=el('div','r'+(t.hervorheben?' hl':'')+(e?'':' tba'));
+    const dt=el('div','dt'); if(e) dt.textContent=F(e); else { dt.appendChild(el('span','bd','TERMIN FOLGT')); }
+    const h=el('h4',null,t.titel||'(ohne Titel)');
+    const nt=el('div','nt'); const head=[t.zeit&&t.zeit+' Uhr',t.ort].filter(Boolean);
+    if(head.length) nt.appendChild(el('b',null,head.join(' · ')));
+    if(t.notiz) nt.appendChild(document.createTextNode((head.length?' — ':'')+t.notiz));
+    r.append(dt,h,nt); box.appendChild(r); n++; });
+  if(!n){ box.appendChild(el('div',null,'Aktuell keine anstehenden Termine.')); box.firstChild.style.padding='1rem'; }
+}
+
+/* ---------- Server ---------- */
+async function call(method,url,body){
+  const r=await fetch(url,{method,cache:'no-store',headers:Object.assign({'x-editor-passwort':encodeURIComponent(PW)},body?{'content-type':'application/json'}:{}),body:body?JSON.stringify(body):undefined});
+  let j=null; try{ j=await r.json(); }catch(e){}
+  return {status:r.status,json:j};
+}
+async function loadData(){
+  try{ const r=await fetch(API,{cache:'no-store'}); if(r.ok){ const d=await r.json(); if(d&&Array.isArray(d.termine)) return normalize(d); } }catch(e){}
+  try{ const r=await fetch('/termine.json',{cache:'no-cache'}); if(r.ok){ const d=await r.json(); if(d&&Array.isArray(d.termine)) return normalize(d); } }catch(e){}
+  return normalize(DEFAULT);
+}
+
+/* ---------- Anmeldung ---------- */
+const SETUP_STEPS=[
+  'Netlify öffnen → die Website auswählen → „Site configuration" → „Environment variables".',
+  '„Add a variable" → Name: `EDITOR_PASSWORD`, Wert: das gewünschte Passwort → speichern.',
+  'Den kompletten Website-Ordner (mit dem Unterordner `netlify`) erneut hochladen („Deploys" → Ordner hineinziehen).'
+];
+function showApp(live){
+  LIVE=live; $('login').hidden=true; $('app').hidden=false; $('savebar').hidden=false; $('logout').hidden=!live;
+  if(!live){ msg($('appmsg'),'warn','Nur-Datei-Modus',['Auf dieser Website ist das direkte Speichern noch nicht eingerichtet. Du kannst Termine hier bearbeiten und als Datei herunterladen. Zum Veröffentlichen die Datei „termine.json" im Website-Ordner ersetzen und den Ordner neu hochladen.']); }
+  else $('appmsg').hidden=true;
+  setState();
+}
+async function enter(pw,silent){
+  const lb=$('lbtn'), lm=$('lmsg'); lb.disabled=true; lb.textContent='Prüfe …'; lm.hidden=true;
+  PW=pw; let res=null, netErr=false;
+  try{ res=await call('GET',API+'?check=1'); }catch(e){ netErr=true; }
+  lb.disabled=false; lb.textContent='Anmelden';
+  if(!netErr&&res.status===200&&res.json&&res.json.ok){
+    sset(SS,pw); S=await loadData(); showApp(true); render(); redrawPrev(); dirty=false; setState(); return;
+  }
+  sset(SS,'');
+  if(silent){ $('login').hidden=false; return; }
+  const offerFile=()=>{ const b=el('button','btn small','Trotzdem öffnen (nur Datei-Download)'); b.type='button'; b.style.marginTop='.8rem'; b.addEventListener('click',async()=>{ S=await loadData(); showApp(false); render(); redrawPrev(); dirty=false; setState(); }); lm.appendChild(b); };
+  if(!netErr&&res.status===401){ msg(lm,'err','Falsches Passwort',['Bitte noch einmal versuchen. Groß- und Kleinschreibung beachten.']); $('pw').select(); return; }
+  if(!netErr&&res.status===503&&res.json&&res.json.fehler==='nicht_eingerichtet'){
+    msg(lm,'err','Das Passwort ist in Netlify noch nicht hinterlegt',['Einmalige Einrichtung:'],SETUP_STEPS); offerFile(); return; }
+  if(netErr){ msg(lm,'err','Keine Verbindung',['Der Speicher ist gerade nicht erreichbar. Internetverbindung prüfen und noch einmal versuchen.']); offerFile(); return; }
+  msg(lm,'err','Die Speicherfunktion ist auf dieser Website nicht aktiv',['Entweder fehlte beim Hochladen der Unterordner „netlify", oder Netlify übernimmt Funktionen beim Hochladen per Drag & Drop nicht. In dem Fall den Ordner über GitHub oder die Netlify-Kommandozeile veröffentlichen. Einrichtung:'],SETUP_STEPS); offerFile();
+}
+$('lform').addEventListener('submit',e=>{ e.preventDefault(); const v=$('pw').value; if(v) enter(v,false); });
+$('logout').addEventListener('click',()=>{ if(dirty&&!confirm('Es gibt nicht gespeicherte Änderungen. Trotzdem abmelden?')) return; dirty=false; sset(SS,''); PW=''; location.reload(); });
+
+/* ---------- Aktionen ---------- */
+$('add').addEventListener('click',()=>{ S.termine.push({id:uid(),titel:'',auto:'',datum:'',zeit:'',ort:'',notiz:'',hervorheben:false}); touch(); render(); redrawPrev(); const c=$('list').lastElementChild; if(c){ c.scrollIntoView({behavior:'smooth',block:'center'}); const i=c.querySelector('input'); if(i)i.focus({preventScroll:true}); } });
+$('sort').addEventListener('click',()=>{ S.termine.sort((a,b)=>{ const x=eff(a),y=eff(b); return (x?x.getTime():9e15)-(y?y.getTime():9e15); }); touch(); render(); redrawPrev(); toast('Nach Datum sortiert. Termine ohne Datum stehen am Ende.'); });
+
+function payload(){ return {version:1,termine:S.termine.map(({id,titel,auto,datum,zeit,ort,notiz,hervorheben})=>({id,titel:titel.trim(),auto,datum,zeit,ort:ort.trim(),notiz:notiz.trim(),hervorheben:!!hervorheben}))}; }
+function validate(){
+  let first=null;
+  S.termine.forEach(t=>{ const card=document.querySelector('.ev[data-id="'+t.id+'"]'); if(!card) return;
+    const bad=!t.titel.trim()||(mode(t)==='fix'&&!t.datum); card.classList.toggle('bad',bad); if(bad&&!first) first=card; });
+  if(first){ first.scrollIntoView({behavior:'smooth',block:'center'}); toast('Bitte bei jedem Termin einen Titel eintragen (und bei „Festes Datum" ein Datum).','err'); return false; }
+  return true;
+}
+function download(){
+  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([JSON.stringify(payload(),null,2)],{type:'application/json'})); a.download='termine.json';
+  document.body.appendChild(a); a.click(); a.remove(); toast('termine.json heruntergeladen. Jetzt im Website-Ordner ersetzen und hochladen.','ok');
+}
+async function save(){
+  if(saving) return; if(!validate()) return;
+  if(!LIVE){ download(); return; }
+  saving=true; setState();
+  try{
+    const r=await call('PUT',API,payload());
+    if(r.status===200&&r.json&&r.json.ok){
+      dirty=false; const d=new Date(); setState.when=d.toLocaleTimeString('de-DE',{hour:'2-digit',minute:'2-digit'});
+      /* Gegenprobe: genau das, was Besucher jetzt von der Website laden, muss der gerade gespeicherte Stand sein */
+      let live=false;
+      try{ const c=await fetch(API,{cache:'no-store'}); if(c.ok){ const j=await c.json(); live=!!(j&&j.aktualisiert&&j.aktualisiert===r.json.aktualisiert); } }catch(e){}
+      setState.live=live;
+      /* offene Website-Tabs (gleicher Browser) sofort aktualisieren; andere Besucher beim nächsten Laden bzw. spätestens nach 1 Minute */
+      try{ localStorage.setItem('kgbTermineUpdated',String(Date.now())); }catch(e){}
+      try{ const bc=new BroadcastChannel('kgb-termine'); bc.postMessage(1); bc.close(); }catch(e){}
+      toast(live?'Gespeichert – die Termine sind jetzt live auf der Website.':'Gespeichert. Die Website übernimmt die Termine in wenigen Sekunden.','ok');
+    } else if(r.status===401){
+      toast('Das Passwort wurde geändert. Bitte neu anmelden.','err'); sset(SS,''); setTimeout(()=>{ dirty=false; location.reload(); },1800);
+    } else if(r.status===503){ toast('Das Passwort ist in Netlify nicht mehr hinterlegt (EDITOR_PASSWORD).','err'); }
+    else if(r.status===413){ toast('Zu viele oder zu lange Einträge. Bitte kürzen.','err'); }
+    else { toast('Speichern fehlgeschlagen (Fehler '+r.status+'). Bitte noch einmal versuchen.','err'); }
+  }catch(e){ toast('Keine Verbindung. Deine Änderungen sind noch hier, bitte noch einmal speichern.','err'); }
+  saving=false; setState();
+}
+$('save').addEventListener('click',save);
+document.addEventListener('keydown',e=>{ if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='s'&&!$('app').hidden){ e.preventDefault(); save(); } });
+
+/* ---------- Start ---------- */
+const saved=sget(SS);
+if(saved) enter(saved,true);
+})();
+</script>
+</body>
+</html>

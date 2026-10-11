@@ -1,0 +1,7 @@
+# Netlify-Einstellungen · KG „Bleibach" Frauenberg 1972 e.V.
+# Wird nur bei einem Deploy per Git oder Netlify-CLI gelesen (dort läuft auch die Speicherfunktion des Editors).
+[build]
+  publish = "."
+
+[functions]
+  directory = "netlify/functions"
