@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /editor/
+Disallow: /.netlify/
+
+Sitemap: https://www.kg-bleibach.de/sitemap.xml
