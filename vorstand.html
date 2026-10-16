@@ -411,13 +411,17 @@ section[id],footer[id]{scroll-margin-top:5.2rem}
 }
 @media (prefers-reduced-motion:reduce){.vc figure,.vc.cta a{transition:none}}
 
+.langbar{display:flex;justify-content:center;gap:.5rem;padding:.34rem 12px;background:var(--ink)}
+.langbar button{font:700 .74rem/1 var(--fd,system-ui);letter-spacing:.04em;color:var(--paper);background:transparent;border:2px solid var(--paper);padding:.5em 1em;cursor:pointer}
+.langbar button.on{background:var(--gold);color:var(--ink);border-color:var(--gold)}
+.langbar button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 </style>
 </head>
 <body>
 <a class="skip" href="#verein">Zum Inhalt springen</a>
 <div id="prog" aria-hidden="true"></div>
 <div class="topline"><div class="wrap"><span>KG „Bleibach" Frauenberg 1972 e.V.</span><span>FrauObI · Euskirchen — <b>FrauObI Alaaf!</b></span></div></div>
-<nav class="bar" aria-label="Hauptnavigation"><div class="wrap">
+<nav class="bar" aria-label="Hauptnavigation"><div class="langbar" data-nolang role="group" aria-label="Sprache / Sproch"><button type="button" data-lang="de" aria-pressed="false">Auf Hochdeutsch</button><button type="button" data-lang="ksh" aria-pressed="true" class="on">op Kölsch</button></div><div class="wrap">
   <a class="brand" href="index.html"><span class="crest" role="img" aria-label="Wappen der KG Bleibach Frauenberg"></span><span><b>KG Bleibach Frauenberg</b><i>1972 e.V. · Am Bleibach</i></span></a>
   <ul class="navlinks">
     <li><a href="index.html#verein">Verein</a></li>
@@ -535,5 +539,7 @@ toTop.addEventListener('click',()=>scrollTo({top:0,behavior:'smooth'}));
 document.addEventListener('keydown',e=>{if(e.key==='Escape')setMenu(false);});
 })();
 </script>
+<script src="i18n-ksh.js"></script>
+<script src="i18n.js"></script>
 </body>
 </html>
