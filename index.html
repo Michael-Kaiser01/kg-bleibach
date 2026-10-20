@@ -159,6 +159,7 @@ body.menu-open{overflow:hidden}
 .hero .bgword{position:absolute;inset:auto 0 -0.16em;z-index:-1;text-align:center;font:800 clamp(7rem,26vw,22rem)/1 var(--fd);letter-spacing:.02em;color:transparent;-webkit-text-stroke:2px rgba(25,23,18,.10);text-transform:uppercase;pointer-events:none;user-select:none}
 @media (max-width:920px){
   .hero .wrap{grid-template-columns:1fr;gap:3.4rem}
+  .hero .ph{order:-1;margin-top:.6rem}   /* Handy/Tablet: Titelfoto zuerst */
   .ph{justify-self:center;rotate:1.6deg;max-width:420px}
   .roto{left:-1rem}
 }
@@ -785,7 +786,7 @@ html.intro-on #intro{display:block}
   function setTxt(){ if(stxt) stxt.textContent=(mus&&!mus.paused)?'Musik aus':'Musik an'; }
   function stopMusic(){ if(!mus) return; clearInterval(fade); fade=setInterval(function(){ if(mus.volume>0.08){ mus.volume=Math.max(0,mus.volume-0.08); } else { clearInterval(fade); mus.pause(); mus.currentTime=0; mus.volume=1; setTxt(); } },60); }
   if(mus&&sbtn){
-    mus.addEventListener('canplay',function(){ sbtn.hidden=false; },{once:true});
+    sbtn.hidden=false;   /* sofort zeigen: Handys laden Musik erst nach dem Antippen, "canplay" käme dort nie */
     mus.addEventListener('error',function(){ sbtn.hidden=true; });
     sbtn.addEventListener('click',function(e){ e.stopPropagation(); if(mus.paused){ clearInterval(fade); mus.volume=1; var p=mus.play(); if(p&&p.catch) p.catch(function(){}); } else { mus.pause(); } setTxt(); });
     mus.addEventListener('play',setTxt); mus.addEventListener('pause',setTxt);
