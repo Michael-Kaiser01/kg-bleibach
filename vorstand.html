@@ -95,6 +95,10 @@ body.menu-open .burger span::before{top:0;rotate:45deg}
 body.menu-open .burger span::after{top:0;rotate:-45deg}
 @media (max-width:960px){.navlinks{display:none}}
 @media (min-width:961px){.burger{display:none}}
+/* sechs Menüpunkte: zwischen 961 und 1240 px enger setzen, damit nichts umbricht */
+.navlinks a{white-space:nowrap}
+@media (max-width:1240px){.navlinks{gap:1.05rem}.navlinks a{font-size:.74rem;letter-spacing:.04em}}
+@media (max-width:1100px){.navlinks{display:none}.burger{display:grid}}
 
 /* --- Fullscreen-Menü --- */
 #menu{position:fixed;inset:0;z-index:1000;background:var(--ink);color:var(--paper);display:grid;grid-template-rows:1fr auto;padding:6.5rem 0 2rem;
@@ -425,6 +429,8 @@ section[id],footer[id]{scroll-margin-top:5.2rem}
     <li><a href="index.html#abteilungen">Abteilungen</a></li>
     <li><a href="index.html#zoch">Der Zoch</a></li>
     <li><a href="index.html#termine">Termine</a></li>
+    <li><a href="/aktuelles">Aktuelles</a></li>
+    <li><a href="foerderer.html">Förderer</a></li>
   </ul>
   <div class="navcta">
     <a class="btn rot" href="index.html#mitmachen">Mitfeiern</a>
@@ -439,6 +445,8 @@ section[id],footer[id]{scroll-margin-top:5.2rem}
     <li><a href="index.html#abteilungen" data-m><small>02</small>Abteilungen</a></li>
     <li><a href="index.html#zoch" data-m><small>03</small>Der Zoch</a></li>
     <li><a href="index.html#termine" data-m><small>04</small>Termine</a></li>
+    <li><a href="/aktuelles" data-m><small>→</small>Aktuelles</a></li>
+    <li><a href="foerderer.html" data-m><small>→</small>Förderer</a></li>
     <li><a href="index.html#mitmachen" data-m><small>05</small>Mitfeiern</a></li>
     <li><a href="index.html#kontakt" data-m><small>06</small>Kontakt</a></li>
   </ol></div>
@@ -501,7 +509,9 @@ section[id],footer[id]{scroll-margin-top:5.2rem}
       <h4>Folgen</h4>
       <ul>
         <li><a href="https://www.facebook.com/p/KG-Bleibach-Frauenberg-1972-eV-100080045495452/" target="_blank" rel="noopener">Facebook ↗</a></li>
+        <li><a href="/aktuelles">Aktuelles</a></li>
         <li><a href="vorstand.html">Der Vorstand</a></li>
+        <li><a href="foerderer.html">Unsere Förderer</a></li>
         <li><a href="index.html#zoch">Der Zoch</a></li>
         <li><a href="index.html#termine">Termine</a></li>
         <li><a href="index.html#mitmachen">Mitfeiern</a></li>

@@ -110,6 +110,10 @@ body.menu-open .burger span::before{top:0;rotate:45deg}
 body.menu-open .burger span::after{top:0;rotate:-45deg}
 @media (max-width:960px){.navlinks{display:none}}
 @media (min-width:961px){.burger{display:none}}
+/* sechs Menüpunkte: zwischen 961 und 1240 px enger setzen, damit nichts umbricht */
+.navlinks a{white-space:nowrap}
+@media (max-width:1240px){.navlinks{gap:1.05rem}.navlinks a{font-size:.74rem;letter-spacing:.04em}}
+@media (max-width:1100px){.navlinks{display:none}.burger{display:grid}}
 
 /* --- Fullscreen-Menü --- */
 #menu{position:fixed;inset:0;z-index:1000;background:var(--ink);color:var(--paper);display:grid;grid-template-rows:1fr auto;padding:6.5rem 0 2rem;
@@ -368,6 +372,57 @@ section[id],footer[id]{scroll-margin-top:5.2rem}
   .hero .ctas{margin-top:0;justify-content:flex-end}
   .hero .schlacht{grid-column:1/-1;margin-top:.4rem;text-align:center}
 }
+
+/* --- Aktuelles: Button + Fenster mit den 5 neuesten Beiträgen (Daten aus /api/aktuelles) --- */
+.newsbtn{position:fixed;left:1.1rem;bottom:1.1rem;z-index:800;display:inline-flex;align-items:center;gap:.6rem;padding:.85rem 1.05rem;background:var(--ink);color:var(--paper);border:2px solid var(--ink);box-shadow:4px 4px 0 var(--gold);font:700 .76rem/1 var(--fd);letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:transform .2s var(--ease),box-shadow .2s var(--ease)}
+.newsbtn[hidden]{display:none}
+.newsbtn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--gold)}
+.newsbtn .nd{width:10px;height:10px;border-radius:50%;background:var(--gold);flex:none}
+.newsbtn.neu .nd{background:var(--rot);box-shadow:0 0 0 2px var(--paper);animation:npuls 1.6s ease-in-out infinite}
+@keyframes npuls{50%{box-shadow:0 0 0 2px var(--paper),0 0 0 7px rgba(217,47,35,.4)}}
+@media (prefers-reduced-motion:reduce){.newsbtn.neu .nd{animation:none}}
+.news{position:fixed;inset:0;z-index:1650;display:grid;place-items:center;padding:1.2rem}
+.news[hidden]{display:none}
+.news .nbg{position:absolute;inset:0;background:rgba(14,19,15,.55)}
+.news .nbox{position:relative;width:min(640px,94vw);max-height:min(84vh,780px);display:flex;flex-direction:column;background:var(--paper);border:var(--bd);box-shadow:10px 10px 0 var(--ink);outline:none}
+.nhead{flex:none;display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;padding:1.2rem clamp(1.1rem,3.5vw,1.9rem) 1rem;border-bottom:var(--bd);background:var(--rot);color:#fff}
+.nhead .nk{font:700 .66rem/1 var(--fd);letter-spacing:.2em;text-transform:uppercase;color:#ffe9a8}
+.nhead h3{font-size:clamp(1.8rem,5vw,2.4rem);font-weight:800;text-transform:uppercase;margin-top:.4rem}
+.nhead .x{flex:none;width:44px;height:44px;background:var(--ink);color:var(--paper);border:2px solid var(--paper);box-shadow:3px 3px 0 rgba(0,0,0,.35);font:800 1rem/1 var(--fd);cursor:pointer}
+.nlist{list-style:none;overflow:auto;overscroll-behavior:contain;padding:.2rem clamp(1.1rem,3.5vw,1.9rem)}
+.nlist li+li{border-top:2px dashed #cfc6af}
+.nlist a{display:grid;grid-template-columns:96px minmax(0,1fr);gap:1rem;align-items:start;padding:1rem 0;text-decoration:none}
+.nlist .ni{width:96px;height:96px;border:var(--bd);object-fit:cover;background:var(--paper2)}
+.nlist .ni.leer{display:grid;place-items:center;background:var(--gruen);color:var(--paper);font:400 italic 1.15rem/1 var(--fs)}
+.nlist time{font:800 .66rem/1 var(--fd);letter-spacing:.14em;text-transform:uppercase;color:var(--rot)}
+.nlist .nt{display:inline-block;margin-left:.5rem;padding:.2rem .4rem;background:var(--gold);color:var(--ink);font:800 .56rem/1 var(--fd);letter-spacing:.1em;vertical-align:1px}
+.nlist h4{font:800 1.12rem/1.1 var(--fd);text-transform:uppercase;margin:.4rem 0 .3rem;overflow-wrap:anywhere}
+.nlist p{font-size:.88rem;line-height:1.5;color:var(--ink2)}
+.nlist a:hover h4{color:var(--rot)}
+.news .nall{flex:none;justify-content:center;margin:.8rem clamp(1.1rem,3.5vw,1.9rem) 1.3rem}
+body.news-open{overflow:hidden}
+@media (max-width:600px){
+  .news{place-items:end stretch;padding:0}
+  .news .nbox{width:100%;max-height:78vh;border-width:2px 0 0;box-shadow:0 -6px 0 var(--ink)}
+  .nlist a{grid-template-columns:72px minmax(0,1fr);gap:.85rem}
+  .nlist .ni{width:72px;height:72px}
+  .newsbtn{left:.8rem;bottom:.9rem;padding:.8rem .95rem}
+}
+
+/* --- Förderer: Laufband mit Logos (Startseite) --- */
+#foerderer{background:var(--paper2);border-top:var(--bd)}
+.flauf{background:#fff;border-block:var(--bd);overflow:hidden}
+.ftrack{list-style:none;display:flex;width:max-content}
+@media (prefers-reduced-motion:no-preference){.ftrack{animation:flauf 45s linear infinite}}
+.flauf:hover .ftrack,.flauf:focus-within .ftrack{animation-play-state:paused}
+@keyframes flauf{to{translate:-50% 0}}
+@media (prefers-reduced-motion:reduce){.flauf{overflow-x:auto}}
+.ftrack li{flex:none;border-right:2px solid var(--ink)}
+.ftrack a{display:flex;align-items:center;justify-content:center;height:clamp(104px,11vw,128px);padding:0 clamp(1.2rem,2.4vw,2rem);transition:background .25s}
+.ftrack a:hover,.ftrack a:focus-visible{background:var(--paper)}
+.ftrack a.prem{background:#fff7e3}
+.ftrack img{height:clamp(68px,7.6vw,92px);width:auto;max-width:clamp(160px,20vw,250px);object-fit:contain}
+.fmore{margin-top:clamp(1.6rem,4vw,2.4rem);display:flex;justify-content:center}
 </style>
 <!--INTRO:CSS--><style id="introCss">
 /* ===== Intro-Film (25 s) — läuft einmal pro Sitzung, überspringbar ===== */
@@ -759,6 +814,8 @@ html.intro-on #intro{display:block}
     <li><a href="#abteilungen">Abteilungen</a></li>
     <li><a href="#zoch">Der Zoch</a></li>
     <li><a href="#termine">Termine</a></li>
+    <li><a href="/aktuelles">Aktuelles</a></li>
+    <li><a href="foerderer.html">Förderer</a></li>
   </ul>
   <div class="navcta">
     <a class="btn rot" href="#mitmachen">Mitfeiern</a>
@@ -774,6 +831,8 @@ html.intro-on #intro{display:block}
     <li><a href="#abteilungen" data-m><small>02</small>Abteilungen</a></li>
     <li><a href="#zoch" data-m><small>03</small>Der Zoch</a></li>
     <li><a href="#termine" data-m><small>04</small>Termine</a></li>
+    <li><a href="/aktuelles"><small>→</small>Aktuelles</a></li>
+    <li><a href="foerderer.html"><small>→</small>Förderer</a></li>
     <li><a href="#mitmachen" data-m><small>05</small>Mitfeiern</a></li>
     <li><a href="#kontakt" data-m><small>06</small>Kontakt</a></li>
   </ol></div>
@@ -935,6 +994,20 @@ html.intro-on #intro{display:block}
   </div>
 </section>
 
+<!-- ================= FÖRDERER ================= -->
+<section id="foerderer" class="pad" aria-labelledby="hFoe">
+  <div class="wrap">
+    <div class="shead rv">
+      <div><div class="no">05 — Förderer</div><h2 id="hFoe">Unsere Förderer<br><em>und Unterstützer.</em></h2></div>
+      <p class="meta">Ohne sie kein Zoch und keine Sitzung: Danke an alle Unternehmen und Partner, die den Karneval in FrauObI möglich machen.</p>
+    </div>
+  </div>
+  <div class="flauf" role="region" aria-label="Logos unserer Förderer">
+    <ul class="ftrack"><li><a href="foerderer.html#metro-koeln" class="prem"><img src="foerderer/logos/metro-koeln.webp" alt="Logo METRO Köln" width="560" height="147" loading="lazy" decoding="async"></a></li><li><a href="foerderer.html#berbuir"><img src="foerderer/logos/berbuir.webp" alt="Logo Dachdeckermeister Berbuir GmbH" width="560" height="107" loading="lazy" decoding="async"></a></li><li><a href="foerderer.html#frauenberger-partycrew"><img src="foerderer/logos/partycrew.webp" alt="Logo Frauenberger Partycrew" width="387" height="340" loading="lazy" decoding="async"></a></li><li><a href="foerderer.html#ge-verkabelung"><img src="foerderer/logos/ge-verkabelung.webp" alt="Logo GE Verkabelung" width="560" height="222" loading="lazy" decoding="async"></a></li><li><a href="foerderer.html#merzbach"><img src="foerderer/logos/merzbach.webp" alt="Logo Merzbach Elektrotechnik GmbH" width="560" height="172" loading="lazy" decoding="async"></a></li><li><a href="foerderer.html#owlyprint"><img src="foerderer/logos/owlyprint.webp" alt="Logo OwlyPrint" width="340" height="340" loading="lazy" decoding="async"></a></li><li><a href="foerderer.html#schmoelz"><img src="foerderer/logos/schmoelz.webp" alt="Logo Schmölz" width="560" height="154" loading="lazy" decoding="async"></a></li><li><a href="foerderer.html#tdv-service"><img src="foerderer/logos/tdv.webp" alt="Logo TDV Service" width="560" height="272" loading="lazy" decoding="async"></a></li><li><a href="foerderer.html#wurfmaterial-euskirchen"><img src="foerderer/logos/wurfmaterial.webp" alt="Logo Wurfmaterial Euskirchen" width="342" height="340" loading="lazy" decoding="async"></a></li><li aria-hidden="true"><a href="foerderer.html#metro-koeln" tabindex="-1" class="prem"><img src="foerderer/logos/metro-koeln.webp" alt="" width="560" height="147" loading="lazy" decoding="async"></a></li><li aria-hidden="true"><a href="foerderer.html#berbuir" tabindex="-1"><img src="foerderer/logos/berbuir.webp" alt="" width="560" height="107" loading="lazy" decoding="async"></a></li><li aria-hidden="true"><a href="foerderer.html#frauenberger-partycrew" tabindex="-1"><img src="foerderer/logos/partycrew.webp" alt="" width="387" height="340" loading="lazy" decoding="async"></a></li><li aria-hidden="true"><a href="foerderer.html#ge-verkabelung" tabindex="-1"><img src="foerderer/logos/ge-verkabelung.webp" alt="" width="560" height="222" loading="lazy" decoding="async"></a></li><li aria-hidden="true"><a href="foerderer.html#merzbach" tabindex="-1"><img src="foerderer/logos/merzbach.webp" alt="" width="560" height="172" loading="lazy" decoding="async"></a></li><li aria-hidden="true"><a href="foerderer.html#owlyprint" tabindex="-1"><img src="foerderer/logos/owlyprint.webp" alt="" width="340" height="340" loading="lazy" decoding="async"></a></li><li aria-hidden="true"><a href="foerderer.html#schmoelz" tabindex="-1"><img src="foerderer/logos/schmoelz.webp" alt="" width="560" height="154" loading="lazy" decoding="async"></a></li><li aria-hidden="true"><a href="foerderer.html#tdv-service" tabindex="-1"><img src="foerderer/logos/tdv.webp" alt="" width="560" height="272" loading="lazy" decoding="async"></a></li><li aria-hidden="true"><a href="foerderer.html#wurfmaterial-euskirchen" tabindex="-1"><img src="foerderer/logos/wurfmaterial.webp" alt="" width="342" height="340" loading="lazy" decoding="async"></a></li></ul>
+  </div>
+  <div class="wrap fmore"><a class="btn" href="foerderer.html">Alle Förderer ansehen →</a></div>
+</section>
+
 <!-- ================= MITMACHEN ================= -->
 <section id="mitmachen">
   <div class="bunt" style="filter:brightness(0) invert(1);opacity:.9"></div>
@@ -973,7 +1046,9 @@ html.intro-on #intro{display:block}
       <h4>Folgen</h4>
       <ul>
         <li><a href="https://www.facebook.com/p/KG-Bleibach-Frauenberg-1972-eV-100080045495452/" target="_blank" rel="noopener">Facebook ↗</a></li>
+        <li><a href="/aktuelles">Aktuelles</a></li>
         <li><a href="vorstand.html">Der Vorstand</a></li>
+        <li><a href="foerderer.html">Unsere Förderer</a></li>
         <li><a href="#zoch">Der Zoch</a></li>
         <li><a href="#termine">Termine</a></li>
         <li><a href="#mitmachen">Mitfeiern</a></li>
@@ -989,6 +1064,17 @@ html.intro-on #intro{display:block}
     <span><a href="#impressum" data-modal="imp">Impressum</a> · <a href="#datenschutz" data-modal="ds">Datenschutz</a> · <a href="#" id="introReplay">Intro ansehen</a></span>
   </div>
 </footer>
+
+<!-- ================= AKTUELLES (Fenster) ================= -->
+<button class="newsbtn" id="newsBtn" type="button" aria-haspopup="dialog" aria-controls="news" aria-expanded="false" hidden><span class="nd" aria-hidden="true"></span>Aktuelles</button>
+<div class="news" id="news" role="dialog" aria-modal="true" aria-labelledby="newsH" hidden>
+  <div class="nbg" data-nclose></div>
+  <div class="nbox">
+    <div class="nhead"><div><span class="nk">Neues vom Bleibach</span><h3 id="newsH">Aktuelles</h3></div><button class="x" type="button" data-nclose aria-label="Fenster schließen">✕</button></div>
+    <ol class="nlist" id="newsList"></ol>
+    <a class="btn rot nall" href="/aktuelles">Alle Beiträge ansehen →</a>
+  </div>
+</div>
 
 <button id="toTop" aria-label="Nach oben">↑</button>
 
@@ -1026,6 +1112,10 @@ html.intro-on #intro{display:block}
     <p>Beim Aufruf dieser Website verarbeitet der Hostinganbieter technisch notwendige Daten (z. B. IP-Adresse, Zeitpunkt, abgerufene Datei) zur Auslieferung und Sicherheit der Seite (Art. 6 Abs. 1 lit. f DSGVO).</p>
     <h5>Schriftarten</h5>
     <p>Alle Schriftarten werden lokal von unserem Server ausgeliefert. Beim Aufruf dieser Website wird keine Verbindung zu Google oder anderen Drittanbietern hergestellt. Diese Website setzt keine Cookies und verwendet kein Tracking.</p>
+    <h5>Fenster „Aktuelles“</h5>
+    <p>Damit das Fenster mit unseren Neuigkeiten nicht bei jedem Besuch erneut aufgeht, speichert Ihr Browser im lokalen Speicher (localStorage) die Kennung des zuletzt angezeigten Beitrags. Diese Angabe bleibt auf Ihrem Gerät, wird nicht an uns übertragen und lässt sich über die Browser-Einstellungen jederzeit löschen.</p>
+    <h5>Teilen-Schaltflächen</h5>
+    <p>Auf den Beitragsseiten gibt es einfache Links zum Teilen über Facebook und WhatsApp. Erst wenn Sie einen solchen Link anklicken, wird eine Verbindung zum jeweiligen Anbieter hergestellt; vorher werden keine Daten übertragen.</p>
     <h5>Kontaktaufnahme</h5>
     <p>Bei Kontakt per E-Mail oder Telefon verarbeiten wir Ihre Angaben zur Bearbeitung der Anfrage (Art. 6 Abs. 1 lit. b/f DSGVO).</p>
     <h5>Ihre Rechte</h5>
@@ -1144,6 +1234,83 @@ hashModal(); addEventListener('hashchange',hashModal);
 addEventListener('keydown',e=>{ if(e.key!=='Escape')return;
   document.querySelectorAll('.modal.open').forEach(m=>{ m.classList.remove('open'); document.body.style.overflow=''; });
   if(document.body.classList.contains('menu-open')) setMenu(false); });
+})();
+</script>
+<script>
+/* ============ Aktuelles: Fenster mit den 5 neuesten Beiträgen (gepflegt im /editor) ============ */
+(()=>{
+const $=s=>document.getElementById(s);
+const box=$('news'), btn=$('newsBtn'), list=$('newsList'); if(!box||!btn||!list) return;
+const KEY='kgbNewsGesehen';                       /* Kennung des zuletzt gesehenen Beitrags, bleibt nur im Browser */
+const lget=()=>{ try{ return localStorage.getItem(KEY)||''; }catch(e){ return ''; } };
+const lset=v=>{ try{ localStorage.setItem(KEY,v); }catch(e){} };
+const M=['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+const lang=iso=>{ const p=String(iso).split('-').map(Number); return p[2]?p[2]+'. '+M[p[1]-1]+' '+p[0]:''; };
+const kurz=(t,n)=>{ t=String(t||'').replace(/\s+/g,' ').trim(); if(t.length<=n) return t; const c=t.slice(0,n); return c.slice(0,Math.max(c.lastIndexOf(' '),n-20)).replace(/[\s,;:.!?–-]+$/,'')+' …'; };
+const el=(tag,cls,txt)=>{ const e=document.createElement(tag); if(cls) e.className=cls; if(txt!=null) e.textContent=txt; return e; };
+let neueste='', neuDatum='', lastFocus=null, autoDone=false;
+
+function render(d){
+  const b=(d&&Array.isArray(d.beitraege)?d.beitraege:[]).slice(0,5);
+  if(!b.length){ btn.hidden=true; neueste=''; return; }
+  const seen=lget(), idx=seen?b.findIndex(x=>x.id===seen):-1;
+  list.replaceChildren(...b.map((x,i)=>{
+    const li=el('li'), a=el('a'); a.href='/aktuelles/'+encodeURIComponent(x.slug);
+    let img;
+    if(x.bild){ img=el('img','ni'); img.src='/aktuelles/bild/'+x.bild+'-k.jpg'; img.alt=x.bildAlt||''; img.loading='lazy'; img.decoding='async'; img.width=96; img.height=96; }
+    else { img=el('span','ni leer','Alaaf!'); img.setAttribute('aria-hidden','true'); }
+    const t=el('div'), tm=el('time',null,lang(x.datum)); tm.dateTime=x.datum; t.appendChild(tm);
+    if(seen&&(idx<0||i<idx)) t.appendChild(el('span','nt','Neu'));
+    t.append(el('h4',null,x.titel), el('p',null,kurz(x.text,140)));
+    a.append(img,t); a.addEventListener('click',()=>lset(neueste)); li.appendChild(a); return li; }));
+  neueste=b[0].id; neuDatum=b[0].datum; btn.hidden=false; btn.classList.toggle('neu',seen!==neueste);
+  btn.setAttribute('aria-label',seen!==neueste?'Aktuelles – neue Beiträge':'Aktuelles');
+}
+function open(){
+  if(!box.hidden||!neueste) return; lastFocus=document.activeElement;
+  box.hidden=false; document.body.classList.add('news-open'); btn.setAttribute('aria-expanded','true');
+  list.scrollTop=0; box.querySelector('.x').focus();
+}
+function close(){
+  if(box.hidden) return; box.hidden=true; document.body.classList.remove('news-open'); btn.setAttribute('aria-expanded','false');
+  if(neueste){ lset(neueste); btn.classList.remove('neu'); btn.setAttribute('aria-label','Aktuelles'); }
+  if(lastFocus&&lastFocus.focus) lastFocus.focus({preventScroll:true});
+}
+btn.addEventListener('click',open);
+box.querySelectorAll('[data-nclose]').forEach(x=>x.addEventListener('click',close));
+box.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){ e.stopPropagation(); close(); return; }
+  if(e.key!=='Tab') return;                       /* Fokus bleibt im Fenster */
+  const f=[...box.querySelectorAll('a[href],button')].filter(x=>x.offsetParent!==null); if(!f.length) return;
+  const first=f[0], last=f[f.length-1];
+  if(e.shiftKey&&document.activeElement===first){ e.preventDefault(); last.focus(); }
+  else if(!e.shiftKey&&document.activeElement===last){ e.preventDefault(); first.focus(); }
+});
+
+/* Einmal von selbst öffnen: nur bei einem neuen, höchstens 30 Tage alten Beitrag, nach dem Intro und nie über Menü oder anderen Fenstern */
+function autoOpen(){
+  if(autoDone||!neueste||lget()===neueste) return;
+  const p=neuDatum.split('-').map(Number); if(!p[2]||Date.now()-new Date(p[0],p[1]-1,p[2]).getTime()>30*864e5) return;
+  if(location.hash) return;                        /* wer gezielt zu einem Abschnitt springt, wird nicht unterbrochen */
+  autoDone=true;
+  const root=document.documentElement;
+  const go=()=>setTimeout(()=>{ if(document.hidden||document.body.classList.contains('menu-open')||document.querySelector('.modal.open')||root.classList.contains('intro-on')) return; open(); },1800);
+  if(!root.classList.contains('intro-on')) return go();
+  const mo=new MutationObserver(()=>{ if(!root.classList.contains('intro-on')){ mo.disconnect(); go(); } });
+  mo.observe(root,{attributes:true,attributeFilter:['class']});
+}
+
+let stamp='';
+function load(first){
+  return fetch('/api/aktuelles',{cache:'no-cache'})
+    .then(r=>{ if(!r.ok||!/json/.test(r.headers.get('content-type')||'')) throw 0; return r.json(); })
+    .then(d=>{ if(d&&d.aktualisiert===stamp&&!first) return; stamp=(d&&d.aktualisiert)||''; render(d); if(first) autoOpen(); })
+    .catch(()=>{ if(first) btn.hidden=true; });
+}
+load(true);
+/* Neue Beiträge aus dem Editor (gleicher Browser) sofort übernehmen */
+try{ const bc=new BroadcastChannel('kgb-aktuelles'); bc.onmessage=()=>load(false); }catch(e){}
+window.addEventListener('storage',e=>{ if(e.key==='kgbAktuellesUpdated') load(false); });
 })();
 </script>
 </body>
