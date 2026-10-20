@@ -7,6 +7,11 @@
 <meta name="color-scheme" content="light">
 <title>Termin-Editor — KG Bleibach Frauenberg</title>
 <link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="manifest" href="/editor/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/editor/icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="KG Editor">
 <style>
 @font-face{font-family:"Bricolage Grotesque";src:url(/fonts/bricolage-grotesque-var.woff2) format("woff2");font-weight:200 800;font-display:swap}
 @font-face{font-family:"Space Grotesk";src:url(/fonts/space-grotesk-var.woff2) format("woff2");font-weight:300 700;font-display:swap}
@@ -25,6 +30,8 @@ header.top h1 small{display:block;font:600 .68rem/1.2 var(--fb);letter-spacing:.
 header.top nav{display:flex;gap:1.1rem;align-items:center}
 header.top a,header.top button{color:var(--gold);font:600 .9rem/1 var(--fb);text-decoration:none;background:none;border:0;cursor:pointer;padding:.3rem 0}
 header.top a:hover,header.top button:hover{text-decoration:underline}
+header.top a[aria-current]{color:var(--paper);text-decoration:underline;text-decoration-color:var(--rot);text-decoration-thickness:3px;text-underline-offset:5px}
+header.top nav{flex-wrap:wrap}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5em;padding:.8em 1.2em;font:700 .8rem/1 var(--fd);letter-spacing:.05em;text-transform:uppercase;color:var(--ink);background:#fff;border:var(--bd);box-shadow:var(--sh);cursor:pointer;text-decoration:none;transition:transform .15s,box-shadow .15s}
 .btn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink)}
 .btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
@@ -99,6 +106,8 @@ input[type=text],input[type=password],input[type=date],input[type=time],select{w
 <header class="top"><div class="wrap">
   <h1>Termin-Editor<small>KG „Bleibach" Frauenberg 1972 e.V.</small></h1>
   <nav>
+    <a href="/editor/beitraege.html">Beiträge</a>
+    <a href="/editor/" aria-current="page">Termine</a>
     <a href="/">← Zur Website</a>
     <button type="button" id="logout" hidden>Abmelden</button>
   </nav>
@@ -294,7 +303,7 @@ async function enter(pw,silent){
   msg(lm,'err','Die Speicherfunktion ist auf dieser Website nicht aktiv',['Entweder fehlte beim Hochladen der Unterordner „netlify", oder Netlify übernimmt Funktionen beim Hochladen per Drag & Drop nicht. In dem Fall den Ordner über GitHub oder die Netlify-Kommandozeile veröffentlichen. Einrichtung:'],SETUP_STEPS); offerFile();
 }
 $('lform').addEventListener('submit',e=>{ e.preventDefault(); const v=$('pw').value; if(v) enter(v,false); });
-$('logout').addEventListener('click',()=>{ if(dirty&&!confirm('Es gibt nicht gespeicherte Änderungen. Trotzdem abmelden?')) return; dirty=false; sset(SS,''); PW=''; location.reload(); });
+$('logout').addEventListener('click',()=>{ if(dirty&&!confirm('Es gibt nicht gespeicherte Änderungen. Trotzdem abmelden?')) return; dirty=false; sset(SS,''); try{localStorage.removeItem('kgb_editor_pw_dauer');}catch(e){} PW=''; location.reload(); });
 
 /* ---------- Aktionen ---------- */
 $('add').addEventListener('click',()=>{ S.termine.push({id:uid(),titel:'',auto:'',datum:'',zeit:'',ort:'',notiz:'',hervorheben:false}); touch(); render(); redrawPrev(); const c=$('list').lastElementChild; if(c){ c.scrollIntoView({behavior:'smooth',block:'center'}); const i=c.querySelector('input'); if(i)i.focus({preventScroll:true}); } });
@@ -340,7 +349,7 @@ $('save').addEventListener('click',save);
 document.addEventListener('keydown',e=>{ if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='s'&&!$('app').hidden){ e.preventDefault(); save(); } });
 
 /* ---------- Start ---------- */
-const saved=sget(SS);
+const saved=sget(SS)||(()=>{try{return localStorage.getItem('kgb_editor_pw_dauer')||'';}catch(e){return '';}})();   /* „angemeldet bleiben“ aus dem Beiträge-Editor */
 if(saved) enter(saved,true);
 })();
 </script>

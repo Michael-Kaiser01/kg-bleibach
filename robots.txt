@@ -1,6 +1,9 @@
 User-agent: *
 Allow: /
 Disallow: /editor/
+Disallow: /vorlagen/
+Disallow: /api/
 Disallow: /.netlify/
 
 Sitemap: https://www.kg-bleibach.de/sitemap.xml
+Sitemap: https://www.kg-bleibach.de/aktuelles/sitemap.xml

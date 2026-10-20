@@ -7,6 +7,12 @@
   X-Frame-Options: DENY
   Cache-Control: no-cache
 
+/vorlagen/*
+  X-Robots-Tag: noindex, nofollow
+
+/editor/manifest.webmanifest
+  Content-Type: application/manifest+json
+
 /termine.json
   Cache-Control: no-cache
 
