@@ -5,3 +5,10 @@
 
 [functions]
   directory = "netlify/functions"
+
+# Hinweisdatei für Claude nicht öffentlich ausliefern
+[[redirects]]
+  from = "/CLAUDE.md"
+  to = "/"
+  status = 404
+  force = true
