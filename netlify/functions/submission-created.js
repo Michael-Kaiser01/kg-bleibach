@@ -72106,6 +72106,20 @@ async function sende({ pdf, dateiname, betreff, text, replyTo }) {
   await tx.sendMail({ from: process.env.MAIL_FROM || `"KG Bleibach Website" <${process.env.SMTP_USER}>`, to, replyTo: replyTo || void 0, subject: betreff, text, attachments: [{ filename: dateiname, content: Buffer.from(pdf), contentType: "application/pdf" }] });
   return "smtp";
 }
+async function loescheEinsendung(id) {
+  const token = process.env.NETLIFY_API_TOKEN;
+  if (!token || !id) {
+    console.log("Einsendung nicht gel\xF6scht (NETLIFY_API_TOKEN fehlt)");
+    return;
+  }
+  try {
+    const r = await fetch(`https://api.netlify.com/api/v1/submissions/${encodeURIComponent(id)}`, { method: "DELETE", headers: { Authorization: `Bearer ${token}` } });
+    if (!r.ok) throw new Error(`Netlify ${r.status}: ${await r.text()}`);
+    console.log("Einsendung in Netlify Forms gel\xF6scht");
+  } catch (err) {
+    console.error("L\xF6schen der Einsendung fehlgeschlagen:", err.message);
+  }
+}
 var handler = async (event) => {
   let payload;
   try {
@@ -72133,11 +72147,12 @@ var handler = async (event) => {
     `Telefon: ${clean(d.telefon)}`,
     "",
     "Die vollst\xE4ndige Beitrittserkl\xE4rung mit SEPA-Lastschriftmandat liegt als PDF im Anhang.",
-    "Bitte nach \xDCbernahme in die Mitgliederverwaltung die Einsendung in Netlify (Forms) l\xF6schen."
+    process.env.NETLIFY_API_TOKEN ? "Die Einsendung wurde in Netlify (Forms) automatisch gel\xF6scht \u2013 diese E-Mail ist die einzige Kopie. Bitte das PDF ablegen und die Daten in die Mitgliederverwaltung \xFCbernehmen." : "Bitte nach \xDCbernahme in die Mitgliederverwaltung die Einsendung in Netlify (Forms) l\xF6schen."
   ].join("\n");
   try {
     const weg = await sende({ pdf, dateiname, betreff: `Beitrittserkl\xE4rung (PDF): ${vorname} ${name2}`, text, replyTo: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? email : "" });
     console.log(`Beitrittserkl\xE4rung als PDF versendet (${weg})`);
+    await loescheEinsendung(payload.id);
     return { statusCode: 200, body: "ok" };
   } catch (err) {
     console.error("PDF-Versand fehlgeschlagen:", err.message);

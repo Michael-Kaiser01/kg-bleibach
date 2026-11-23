@@ -157,6 +157,22 @@ async function sende({ pdf, dateiname, betreff, text, replyTo }) {
   return 'smtp';
 }
 
+// Löscht die Einsendung in Netlify Forms, sobald die PDF-Mail verschickt ist –
+// die Daten (inkl. IBAN) liegen dann nur noch im Postfach info@.
+// Braucht die Umgebungsvariable NETLIFY_API_TOKEN (Personal Access Token); ohne sie bleibt die Einsendung stehen.
+// Schlägt der Mailversand fehl, wird nicht gelöscht – die Einsendung bleibt als Sicherung erhalten.
+async function loescheEinsendung(id) {
+  const token = process.env.NETLIFY_API_TOKEN;
+  if (!token || !id) { console.log('Einsendung nicht gelöscht (NETLIFY_API_TOKEN fehlt)'); return; }
+  try {
+    const r = await fetch(`https://api.netlify.com/api/v1/submissions/${encodeURIComponent(id)}`, { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } });
+    if (!r.ok) throw new Error(`Netlify ${r.status}: ${await r.text()}`);
+    console.log('Einsendung in Netlify Forms gelöscht');
+  } catch (err) {
+    console.error('Löschen der Einsendung fehlgeschlagen:', err.message);
+  }
+}
+
 export const handler = async (event) => {
   let payload;
   try { payload = JSON.parse(event.body || '{}').payload || {}; } catch { return { statusCode: 400, body: 'ungültig' }; }
@@ -180,11 +196,14 @@ export const handler = async (event) => {
     `Telefon: ${clean(d.telefon)}`,
     '',
     'Die vollständige Beitrittserklärung mit SEPA-Lastschriftmandat liegt als PDF im Anhang.',
-    'Bitte nach Übernahme in die Mitgliederverwaltung die Einsendung in Netlify (Forms) löschen.',
+    process.env.NETLIFY_API_TOKEN
+      ? 'Die Einsendung wurde in Netlify (Forms) automatisch gelöscht – diese E-Mail ist die einzige Kopie. Bitte das PDF ablegen und die Daten in die Mitgliederverwaltung übernehmen.'
+      : 'Bitte nach Übernahme in die Mitgliederverwaltung die Einsendung in Netlify (Forms) löschen.',
   ].join('\n');
   try {
     const weg = await sende({ pdf, dateiname, betreff: `Beitrittserklärung (PDF): ${vorname} ${name}`, text, replyTo: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? email : '' });
     console.log(`Beitrittserklärung als PDF versendet (${weg})`);
+    await loescheEinsendung(payload.id);
     return { statusCode: 200, body: 'ok' };
   } catch (err) {
     console.error('PDF-Versand fehlgeschlagen:', err.message);

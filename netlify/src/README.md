@@ -22,3 +22,4 @@ Netlify führt keinen Build aus, deshalb liegt die Funktion fertig gebündelt in
 | `SMTP_PASS` | Passwort des Postfachs (als „secret“ markieren) |
 | `MAIL_TO` | optional, Standard `info@kg-bleibach.de` |
 | `MAIL_FROM` | optional, Standard `"KG Bleibach Website" <SMTP_USER>` |
+| `NETLIFY_API_TOKEN` | optional: Personal Access Token (als „secret“ markieren). Ist er gesetzt, wird die Einsendung nach erfolgreichem Mailversand automatisch in Netlify Forms gelöscht. |
