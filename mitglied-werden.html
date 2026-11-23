@@ -235,16 +235,6 @@ footer .base a{color:#e6e0d1}
 .f.err input{border-bottom-color:var(--rotD);background:#fff4f1}
 .f .tipp{order:-1;font:400 .78rem/1.35 var(--fb);color:#6b6556}
 
-.wahl{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:1.2rem}
-.wahl label{position:relative;display:flex;gap:.65rem;align-items:flex-start;flex:1 1 230px;padding:.85rem 1rem;background:#fff;border:var(--bd);box-shadow:var(--shS);cursor:pointer;transition:transform .18s var(--ease),box-shadow .18s var(--ease),background .18s}
-.wahl label:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--ink)}
-.wahl input{position:absolute;opacity:0;pointer-events:none}
-.wahl .dot{flex:none;width:18px;height:18px;margin-top:.1rem;border:2px solid var(--ink);border-radius:50%;background:#fff}
-.wahl input:checked+.dot{background:var(--rot);box-shadow:inset 0 0 0 3px #fff}
-.wahl input:focus-visible+.dot{outline:3px solid var(--rot);outline-offset:3px}
-.wahl label:has(input:checked){background:var(--paper)}
-.wahl b{display:block;font:800 .92rem/1.1 var(--fd);text-transform:uppercase;letter-spacing:.02em}
-.wahl small{display:block;font:400 .86rem/1.4 var(--fb);color:var(--ink2);margin-top:.2rem}
 
 .check{display:flex;gap:.8rem;align-items:flex-start;margin-top:1.2rem;padding:.9rem 1rem;background:var(--paper);border:var(--bd);cursor:pointer}
 .check input{flex:none;appearance:none;-webkit-appearance:none;width:22px;height:22px;margin-top:.05rem;border:2px solid var(--ink);background:#fff;display:grid;place-items:center;cursor:pointer}
@@ -296,12 +286,11 @@ footer .base a{color:#e6e0d1}
   .blatt-wrap{padding:0;width:100%}
   .blatt{border:0;box-shadow:none;width:100%;--rand:0mm}
   .abschnitt{break-inside:avoid;margin-top:6mm}
-  .check,.wahl label{box-shadow:none;background:#fff}
-  .wahl label:not(:has(input:checked)){display:none}
+  .check{box-shadow:none;background:#fff}
   .f input{font-size:10.5pt}
   .f input::placeholder{color:transparent}
   .trikolore{border-top:0;print-color-adjust:exact;-webkit-print-color-adjust:exact}
-  .bkopf .streifen,.check input:checked,.wahl input:checked+.dot{print-color-adjust:exact;-webkit-print-color-adjust:exact}
+  .bkopf .streifen,.check input:checked{print-color-adjust:exact;-webkit-print-color-adjust:exact}
 }
 
 </style>
@@ -371,10 +360,6 @@ footer .base a{color:#e6e0d1}
     <!-- 01 Persönliche Angaben -->
     <fieldset class="abschnitt">
       <legend><small>01</small>Persönliche Angaben</legend>
-      <div class="wahl" role="radiogroup" aria-label="Art der Mitgliedschaft (freiwillig)">
-        <label><input type="radio" name="mitgliedschaft" value="aktiv"><span class="dot"></span><span><b>Aktives Mitglied</b><small>Ich packe mit an: Zoch, Wagenbau, Zeltauf- und -abbau, Tanz …</small></span></label>
-        <label><input type="radio" name="mitgliedschaft" value="inaktiv"><span class="dot"></span><span><b>Inaktives Mitglied</b><small>Ich unterstütze die KG mit meinem Jahresbeitrag.</small></span></label>
-      </div>
       <div class="felder">
         <div class="f"><input id="vorname" name="vorname" autocomplete="given-name" required><label for="vorname">Vorname <i>*</i></label></div>
         <div class="f"><input id="nachname" name="name" autocomplete="family-name" required><label for="nachname">Name <i>*</i></label></div>
@@ -551,7 +536,7 @@ const felder=[...form.querySelectorAll('input')].filter(el=>el.type!=='hidden'&&
 felder.forEach(el=>{ el.addEventListener('blur',()=>{ if(el.type!=='checkbox'&&el.value) pruefe(el); }); el.addEventListener('change',()=>{ if(el.type==='checkbox'||el.closest('.f.err')) pruefe(el); }); });
 
 /* Zusammenfassung für die Danke-Ansicht */
-const zeig=fd=>{ const rows=[['Mitgliedschaft',fd.get('mitgliedschaft')||'—'],['Name',fd.get('vorname')+' '+fd.get('name')],['Geburtsdatum',new Date(fd.get('geburtsdatum')).toLocaleDateString('de-DE')],['Anschrift',fd.get('strasse')+', '+fd.get('plz')+' '+fd.get('ort')],['E-Mail',fd.get('email')],['Telefon',fd.get('telefon')],['Kontoinhaber/in',fd.get('kontoinhaber')],['IBAN',fd.get('iban').replace(/\s+/g,'').replace(/^(.{4}).*(.{4})$/,'$1 **** **** **** $2')],['Kreditinstitut',fd.get('kreditinstitut')],['Ort, Datum',fd.get('ort_unterschrift')+', '+fd.get('datum')]];
+const zeig=fd=>{ const rows=[['Name',fd.get('vorname')+' '+fd.get('name')],['Geburtsdatum',new Date(fd.get('geburtsdatum')).toLocaleDateString('de-DE')],['Anschrift',fd.get('strasse')+', '+fd.get('plz')+' '+fd.get('ort')],['E-Mail',fd.get('email')],['Telefon',fd.get('telefon')],['Kontoinhaber/in',fd.get('kontoinhaber')],['IBAN',fd.get('iban').replace(/\s+/g,'').replace(/^(.{4}).*(.{4})$/,'$1 **** **** **** $2')],['Kreditinstitut',fd.get('kreditinstitut')],['Ort, Datum',fd.get('ort_unterschrift')+', '+fd.get('datum')]];
   const dl=$('bZus'); dl.replaceChildren(); rows.forEach(([k,v])=>{ const dt=document.createElement('dt'); dt.textContent=k; const dd=document.createElement('dd'); dd.textContent=v; dl.append(dt,dd); }); };
 const fertig=()=>{ form.hidden=true; danke.hidden=false; danke.scrollIntoView({behavior:'smooth',block:'start'}); danke.focus({preventScroll:true}); };
 
