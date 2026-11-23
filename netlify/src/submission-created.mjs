@@ -3,7 +3,7 @@
 // Für das Formular „beitrittserklaerung“ erzeugt sie die Beitrittserklärung als PDF im
 // Briefbogen der KG und schickt sie per E-Mail an info@kg-bleibach.de.
 //
-// Quelle: netlify/src/submission-created.mjs → gebündelt nach netlify/functions/ (siehe netlify/src/README.md)
+// Quelle: netlify/src/submission-created.mjs → gebündelt nach netlify/functions/submission-created.js (CommonJS, weil Netlify .mjs-Dateien selbst noch einmal umbündelt; siehe netlify/src/README.md)
 //
 // Umgebungsvariablen (in Netlify unter Project configuration → Environment variables):
 //   Variante SMTP (Postfach info@):  SMTP_HOST, SMTP_PORT (465 oder 587), SMTP_USER, SMTP_PASS

@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "esbuild submission-created.mjs --bundle --platform=node --format=esm --target=node18 --loader:.pdf=binary --loader:.ttf=binary --banner:js=\"import { createRequire as __cr } from 'module'; const require = __cr(import.meta.url);\" --outfile=../functions/submission-created.mjs"
+    "build": "esbuild submission-created.mjs --bundle --platform=node --format=cjs --target=node18 --loader:.pdf=binary --loader:.ttf=binary --outfile=../functions/submission-created.js"
   },
   "dependencies": {
     "@pdf-lib/fontkit": "^1.1.1",

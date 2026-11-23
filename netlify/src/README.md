@@ -5,7 +5,7 @@
 schickt sie per E-Mail an info@kg-bleibach.de.
 
 Netlify führt keinen Build aus, deshalb liegt die Funktion fertig gebündelt in
-`netlify/functions/submission-created.mjs`. Nach Änderungen hier neu bündeln:
+`netlify/functions/submission-created.js` (als CommonJS gebündelt – Netlify bündelt .mjs-Dateien sonst um, dann fehlt `import.meta.url`). Nach Änderungen hier neu bündeln:
 
     cd netlify/src && npm install && npm run build
 
