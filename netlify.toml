@@ -5,3 +5,10 @@
 
 [functions]
   directory = "netlify/functions"
+
+# Quellen der Funktionen nicht öffentlich ausliefern
+[[redirects]]
+  from = "/netlify/*"
+  to = "/index.html"
+  status = 404
+  force = true
