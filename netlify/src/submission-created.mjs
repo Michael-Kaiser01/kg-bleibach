@@ -196,9 +196,6 @@ export const handler = async (event) => {
     `Telefon: ${clean(d.telefon)}`,
     '',
     'Die vollständige Beitrittserklärung mit SEPA-Lastschriftmandat liegt als PDF im Anhang.',
-    process.env.NETLIFY_API_TOKEN
-      ? 'Die Einsendung wurde in Netlify (Forms) automatisch gelöscht – diese E-Mail ist die einzige Kopie. Bitte das PDF ablegen und die Daten in die Mitgliederverwaltung übernehmen.'
-      : 'Bitte nach Übernahme in die Mitgliederverwaltung die Einsendung in Netlify (Forms) löschen.',
   ].join('\n');
   try {
     const weg = await sende({ pdf, dateiname, betreff: `Beitrittserklärung (PDF): ${vorname} ${name}`, text, replyTo: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? email : '' });

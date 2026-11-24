@@ -72146,8 +72146,7 @@ var handler = async (event) => {
     `E-Mail: ${email}`,
     `Telefon: ${clean(d.telefon)}`,
     "",
-    "Die vollst\xE4ndige Beitrittserkl\xE4rung mit SEPA-Lastschriftmandat liegt als PDF im Anhang.",
-    process.env.NETLIFY_API_TOKEN ? "Die Einsendung wurde in Netlify (Forms) automatisch gel\xF6scht \u2013 diese E-Mail ist die einzige Kopie. Bitte das PDF ablegen und die Daten in die Mitgliederverwaltung \xFCbernehmen." : "Bitte nach \xDCbernahme in die Mitgliederverwaltung die Einsendung in Netlify (Forms) l\xF6schen."
+    "Die vollst\xE4ndige Beitrittserkl\xE4rung mit SEPA-Lastschriftmandat liegt als PDF im Anhang."
   ].join("\n");
   try {
     const weg = await sende({ pdf, dateiname, betreff: `Beitrittserkl\xE4rung (PDF): ${vorname} ${name2}`, text, replyTo: /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? email : "" });
